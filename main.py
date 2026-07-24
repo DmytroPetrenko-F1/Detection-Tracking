@@ -47,15 +47,34 @@ class EdgeTracker:
                 continue
                 
             empty_frames = 0 # Скидаємо лічильник, якщо кадр успішний
+            
+            frame_center_x = frame.shape[1] // 2
+            frame_center_y = frame.shape[0] // 2
 
-            # Трекінг об'єктів
-            results = self.model.track(frame, persist=True, verbose=False, imgsz=640)
+            # Трекінг об'єктів (0 - людина, 15 - кіт)
+            results = self.model.track(frame, persist=True, verbose=False, imgsz=640, classes=[0, 15])
 
-            # Отримання кадру з рамками
-            annotated_frame = results[0].plot()
+            # Малюємо власний інтерфейс прямо на frame
+            for box in results[0].boxes.xyxy:
+                x1, y1, x2, y2 = map(int, box.cpu().numpy())
+                # Обчислюємо центр
+                cx = int((x1 + x2) / 2)
+                cy = int((y1 + y2) / 2)
+                # Малюємо приціл (коло)
+                cv2.circle(frame, (cx, cy), 5, (0, 255, 0), 2)
+                
+                error_x = cx - frame_center_x
+                error_y = cy - frame_center_y
+                
+                cv2.line(frame, (frame_center_x, frame_center_y), (cx, cy), (255, 0, 0), 1)
+                cv2.putText(frame, f"Error: {error_x}, {error_y}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+                
+                # За бажанням: можна намалювати ще й лінію до центру або координати
+                cv2.putText(frame, f"Target: {cx}, {cy}", (x1, y1 - 10), 
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
-            # Відображення вікна
-            cv2.imshow("Vyriy Edge Tracker [WSL2]", annotated_frame)
+            # Виводимо чистий frame (БЕЗ .plot())
+            cv2.imshow("Vyriy Edge Tracker [WSL2]", frame)
 
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
