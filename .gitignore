@@ -1,0 +1,65 @@
+# ==========================================
+# Операційні системи та VS Code
+# ==========================================
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# ==========================================
+# Python, Віртуальні середовища та Jupyter
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.env
+venv/
+.venv/
+env/
+.env/
+pip-log.txt
+pip-delete-this-directory.txt
+.ipynb_checkpoints/
+
+# ==========================================
+# Дані, Логи та Моделі ШІ (YOLO, RL, TensorBoard)
+# ==========================================
+*.pt
+*.onnx
+*.weights
+logs/
+tb_logs/
+runs/
+datasets/
+images/
+videos/
+*.mp4
+*.avi
+
+# ==========================================
+# ROS 2 (Робототехніка) та C/C++
+# ==========================================
+build/
+install/
+log/
+*.o
+*.obj
+*.out
+*.exe
+*.dll
+*.a
+*.lib
+CMakeCache.txt
+CMakeFiles/
+compile_commands.json
+
+# ==========================================
+# PlatformIO (Мікроконтролери, ESP32, Arduino)
+# ==========================================
+.pio/
+.pioenvs/
+.piolibdeps/
